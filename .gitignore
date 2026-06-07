@@ -1,0 +1,3 @@
+Get your API key from Google AI Studio (https://aistudio.google.com/)
+# Rename this file to .env and add your key below
+GEMINI_API_KEY=AIzaS***********************************
