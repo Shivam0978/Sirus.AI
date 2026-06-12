@@ -6,6 +6,7 @@ from google.genai import types
 from dotenv import load_dotenv
 import speech_recognition as sr
 import pyttsx3
+import webbrowser
 
 # Loading environment variables from .env file
 load_dotenv()
@@ -85,7 +86,7 @@ def main():
         try:
             user_input = input("\nPress [Enter] to talk, or type your message: ")
 
-            # Check for exit commands
+            # Checking for exit commands
             if user_input.lower() in ["quit", "exit", "q"]:
                 print("Sirus: Goodbye sir.")
                 break
@@ -118,8 +119,38 @@ def main():
             if not spoken_text.strip():
                 continue
 
+            lower_text = spoken_text.strip().lower()
+
+            # Handling open commands
+            if "open google" in lower_text:
+                webbrowser.open("https://www.google.com")
+                msg = "Opening Google sir."
+                speak(msg) if is_voice_mode else print(f"Sirus: {msg}")
+                continue
+            elif "open youtube" in lower_text:
+                webbrowser.open("https://www.youtube.com")
+                msg = "Opening YouTube sir."
+                speak(msg) if is_voice_mode else print(f"Sirus: {msg}")
+                continue
+            elif "open telegram" in lower_text:
+                try:
+                    os.startfile("tg://")
+                except Exception:
+                    webbrowser.open("https://web.telegram.org")
+                msg = "Opening Telegram sir."
+                speak(msg) if is_voice_mode else print(f"Sirus: {msg}")
+                continue
+            elif "open whatsapp" in lower_text:
+                try:
+                    os.startfile("whatsapp://")
+                except Exception:
+                    webbrowser.open("https://web.whatsapp.com")
+                msg = "Opening WhatsApp sir."
+                speak(msg) if is_voice_mode else print(f"Sirus: {msg}")
+                continue
+
             # Programmatic intercept for just calling "sirus"
-            if spoken_text.strip().lower() in ["sirus", "cyrus"]:
+            if lower_text in ["sirus", "cyrus"]:
                 if is_voice_mode:
                     speak(f"Sirus activated. {get_greeting()}")
                 else:
